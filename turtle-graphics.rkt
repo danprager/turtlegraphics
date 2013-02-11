@@ -1,10 +1,11 @@
+;; LICENSE: See License file LICENSE (MIT license)
+;;
+;; Copyright 2013: Daniel Prager
+;;                 daniel.a.prager@gmail.com
+
 ; TODO:
-; * add tests
-; * improve comments
-; * basic documentation
-; * examples
-; * upload to github & publicise
-; * interactive help
+; * more documentation
+; * more examples
 ; * define as library
 ; * set-as-exercise: show-frame-by-frame
 ; * extensions: fill (bit-blt)
