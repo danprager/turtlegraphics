@@ -29,9 +29,9 @@
          repeat
          color
          undo redo
-         clear
+         clear reset
          set-turtle
-         draw
+         redraw
          movie
          show-program
          def
@@ -371,6 +371,11 @@
 
 (define *world* (make-world))
 
+;; Reset the world, without redrawing
+(define (reset)
+  (set! *steps* '())
+  (set! *world* (make-world)))
+
 ;; Clear the world, and the set of steps that build up the 
 ;; current image.
 ;;
@@ -503,7 +508,8 @@
   
     (big-bang (world-image world)
               (on-tick next-frame *tick-rate*)
-              (on-draw show-frame)))) 
+              (on-draw show-frame)
+              (name "turtle-graphics"))))
 
 
 ;; TESTS

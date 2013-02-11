@@ -2,6 +2,9 @@
 
 (require "turtle-graphics.rkt")
 
+(provide J A K E
+         JAKE)
+
 (def (J)
   (rt 180) 
   (fd 100)
@@ -57,5 +60,3 @@
   (K)
   (lt 135) (hop 80) (lt 90) (hop 50)
   (E))
-
-(JAKE)

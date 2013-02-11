@@ -42,13 +42,162 @@ Turtle graphics provide children with a self-contained, concrete
 pictures, simultaneously exploring several mathematical concepts
 and gaining a foothold in the world of programming.
 
-@section{Getting started - Surface Syntax}
+@section{Getting started - an interactive visual guide}
+
+This package is designed to be used interactively from within Dr Racket.
+
+From the interactive prompt type
 
 @codeblock{(require "turtle-graphics.rkt")}
+@(require "turtle-graphics.rkt")
 
+and press <Enter>.
 
+@subsection{Basic commands}
+The basic commands control the turtle and output a new image interactively:
+
+@codeblock{(clear)} Clear the world:
+@(clear)
+
+@codeblock{(fd 50)} Move the turtle forward 50 pixels, 
+leaving a trail:
+@(fd 50)
+
+@codeblock{(rt 90)} Turn right 90 degrees:
+@(rt 90)
+
+@codeblock{(color 'red)} Change the color of the turtle's pen: 
+takes effect when the turtle next draws.
+@(color 'red)
+
+@codeblock{(fd 50)} Move the turtle back 100 pixels, 
+leaving a trail:
+@(bk 100)
+
+@codeblock{(lt 225)} Turn left 225 degrees:
+@(lt 225)
+
+@codeblock{(hop 150)} Hop forward 150 pixels (no trail):
+@(hop 150)
+
+@codeblock{(hop-bk 200)} - hop backward 200 pixels (no trail):
+@(hop-bk 200)
+
+@subsection{Interactive commands}
+@codeblock{(undo)} Undo the previous command.  You can undo as
+many times as there are steps to undo.  Undo (and redo) are 
+vital in-so-far as they allow the child to experiment, and
+make mistakes as they learn:
+@(undo)
+
+@codeblock{(redo)} Redo the previous command.  Reverse of undo.
+@(redo)
+
+@codeblock{(show-program)} Print a listing of the commands 
+so far:
+@codeblock{'((fd 50) 
+             (rt 90) 
+             (color red) 
+             (bk 100) 
+             (lt 225) 
+             (hop 150) 
+             (hop-bk 200))}
+
+This is especially useful in allowing a child to build up
+a sequence of commands interactively, then copy them into
+Dr Racket's definition window for saving / turning into a
+subroutine.
+
+@subsection{Advanced commands}
+
+@codeblock{(repeat 3 (fd 100) (rt 120))}
+The repeat command repeats a sequence of commands. 
+In this example the effect of going forward then turning right
+120 degrees three times is to draw a triangle:
+@(repeat 3 (fd 100) (rt 120))
+
+@codeblock{(set-turtle 'girl)}
+@(set-turtle 'girl)
+The set-turtle command changes the appearance of the turtle.
+A pink girl and a choo-choo train are the out-of-the-box options.
+
+@codeblock{(redraw)}
+@(redraw)
+Redraws the current image with the current turtle:
+
+@codeblock{(movie)}
+Animates the drawing so far in a separate window.
+
+TODO: Get an animated gif in here!
+
+@subsection{Defining your own commands}
+
+@codeblock{
+  (def (colored-square c pix)
+    (color c)
+    (repeat 4 (lt 90) 
+              (fd pix)))}
+@(def (colored-square c pix)
+    (color c)
+    (repeat 4 (lt 90) 
+              (fd pix)))
+
+Use def to capture a sequence of commands and give them a name.
+This is how the child extends the language beyond the basic 
+commands.
+
+Once you have defined a new command you can use it:
+
+@codeblock{(colored-square 'green 75)}
+@(colored-square 'green 75)
+
+Some out-of-the-box defs are provided:
+
+@codeblock{(centered-square 100)}
+@(begin
+   (set-turtle 'turtle)
+   (reset)
+   (centered-square 100))
+
+@codeblock{(centered-circle 50)}
+@(begin
+   (reset)
+   (centered-circle 50))
+
+@codeblock{(polygon 5 50)}
+@(begin 
+   (reset)
+   (polygon 5 50))
+
+@margin-note{Square, circle and half-polygon are also pre-defined.}
 
 @section{Getting started - Challenges for Kids (and Adults)}
+@subsection{Draw your name}
+@(require "jake.rkt")
+Start by figuring out a single letter, for example J:
+@codeblock{
+(def (J)
+  (rt 180) 
+  (fd 100)
+  (half-polygon 100 2.5)
+  (hop 103)
+  (rt 90)
+  (hop 25)
+  (fd 100))}
+
+@codeblock{(J)}
+@(begin 
+   (reset)
+   (repeat 1
+           (hop 75)
+           (J)))
+
+And work your way up to your whole first name:
+
+@codeblock{(JAKE)}
+@(begin
+   (reset)
+   (JAKE))
 
 @section{Understanding the Implementation}
  
