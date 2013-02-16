@@ -7,11 +7,12 @@ graphics -- is two-fold:
 
 @itemlist[@item{to provide a fun toolkit to introduce 
                 elementary (Australia/UK: primary) age
-                children to programming using a subset of 
-                Racket, possibly in the company of their parents.}
+                children to programming from within Dr Racket, 
+                ideally in the company of a suitably 
+                geeky parent or mentor.}
            @item{to explore in its implementation
-                 some of the simpler ideas of layered languages a la
-                 PLAI.}]
+                 some of the simpler ideas of layered languages 
+                 a la PLAI.}]
 
 
 @section{Motivation: Why Turtle Graphics?  Why Racket?}
@@ -38,7 +39,7 @@ Why not instead give them the keys to the kingdom of Racket /
 Scheme / Lisp, and aim for a smoother learning curve?
 
 Turtle graphics provide children with a self-contained, concrete
-"microworld" in which the child can instruct the turtle to draw
+``microworld'' in which the child can instruct the turtle to draw
 pictures, simultaneously exploring several mathematical concepts
 and gaining a foothold in the world of programming.
 
@@ -80,7 +81,7 @@ leaving a trail:
 @codeblock{(hop 150)} Hop forward 150 pixels (no trail):
 @(hop 150)
 
-@codeblock{(hop-bk 200)} - hop backward 200 pixels (no trail):
+@codeblock{(hop-bk 200)} Hop backward 200 pixels (no trail):
 @(hop-bk 200)
 
 @subsection{Interactive commands}
@@ -119,7 +120,9 @@ In this example the effect of going forward then turning right
 @codeblock{(set-turtle 'girl)}
 @(set-turtle 'girl)
 The set-turtle command changes the appearance of the turtle.
-A pink girl and a choo-choo train are the out-of-the-box options.
+A pink @bold{'girl} and a choo-choo @bold{'train} are the 
+out-of-the-box alternatives to the default, literal 
+@bold{'turtle}.
 
 @codeblock{(redraw)}
 @(redraw)
@@ -172,6 +175,20 @@ Some out-of-the-box defs are provided:
 @margin-note{Square, circle and half-polygon are also pre-defined.}
 
 @section{Getting started - Challenges for Kids (and Adults)}
+
+@subsection{Simple activities}
+@itemlist[@item{Draw some simple shapes: rectangles, triangles, squiggles}
+          @item{Experiment with colors}
+          @item{Draw a zig-zaggy line}
+          @item{Draw a simple house}
+          @item{Draw a cartoony cat}
+          @item{Draw the same cat five times}
+          @item{Draw a stick figure person}
+          @item{Draw a star}
+          @item{Draw a brick wall}
+          @item{Experiment with mirror images}
+          @item{Experiment with rotated images}]
+
 @subsection{Draw your name}
 @(require "jake.rkt")
 Start by figuring out a single letter, for example J:
@@ -192,7 +209,7 @@ Start by figuring out a single letter, for example J:
            (hop 75)
            (J)))
 
-And work your way up to your whole first name:
+And work your way up to your whole first name.  Example:
 
 @codeblock{(JAKE)}
 @(begin
@@ -200,9 +217,103 @@ And work your way up to your whole first name:
    (JAKE))
 
 @section{Understanding the Implementation}
- 
+
+First of all, run the code.  Secondly, read it.  
+There are some tests at the end that give the gist of what the
+main transformations -- desugar, resugar, optimize, and 
+partition -- do.
+
+@subsection{Types}
+
+In terms of types there is a higher-level, sugared language:
+@codeblock{(define-type exprS
+             [fdS (pixels number?)]
+             [bkS (pixels number?)]
+             [hopS (pixels number?)]
+             [hop-bkS (pixels number?)]
+             [rtS (degrees number?)]
+             [ltS (degrees number?)]
+             [colorS (color image-color?)]
+             [repeatS (n integer?) (commands list?)]
+             [compositeS (name list?) (commands list?)])}
+
+that is desugared into the simpler core language:
+
+@codeblock{(define-type exprC
+             [fdC (pixels number?)]
+             [hopC (pixels number?)]
+             [rtC (degrees number?)]
+             [colorC (color image-color?)]
+             [no-opC])}
+
+@bold{define-type} is defined in the untyped PLAI language, 
+from Shriram Krishnamurti's book and video lectures on
+Programming Languages and their Interpretation.
+
+Note that the language as it stands is fairly impoverished.
+For example commands -- notwithstanding the use of (repeat ...) 
+are fully expanded -- without recourse to function calls or
+variables.  
+
+@subsection{State}
+
+Global state consists of a list of sugared actions or
+@bold{*steps*} together with a @bold{*redo-stack*};
+@bold{*turtles*} stores 360 rotated images of the current
+turtle; and @bold{*world*} captures the current drawn image and the
+coordinates and orientation of the turtle.
+
+Movies create and maintain their own state.
+
+@subsection{Miscellany}
+One of the design goals was
+to provide an undo / redo that works unsurprisingly: an earlier
+incarnation of this code would require 8 undos to undo a call
+to a (square), which was inconvenient and unwieldy for a child
+to use.  Another goal was to allow the child to experiment
+interactively, then list the program in order to capture it
+and copy into Dr Racket's interaction window.
+
+At the user level there's some macrology to get from the 
+interactive prompt to the sugared language.
+
+One interesting aspect of the core language is that commands
+are executed directly for interactivity, but 
+@bold{(partition)}ed for timing purposes when making a 
+@bold{(movie)}.
+
 @section{Extending the Implementation}
 
+Fork the git repository and extend away!
+
+@subsection{Transformation}
+Because the language is so simple, other explorations are 
+possible, probably most easily done at the core language level.
+Examples:
+@itemlist[@item{A non-destructive transformation could allow
+                the turtle to create the image via a different
+                route series of steps}
+          @item{More creative transformations could take
+                a series of steps and vary them to give
+                an effect to the image}]
+
+
+@subsection{Extensions}
+
+The core and sugared languages could stand some enrichment.  
+Some ideas:
+@itemlist[@item{bit-blt to color in sections}
+          @item{some way to vary the length of the turtle's
+                steps, to scale drawing up and down}
+          @item{save/load an image}
+          @item{save an animation as an animated gif}
+          @item{show text}
+          @item{interactive help}
+          @item{make a scaled down``picture book'' of all
+                the steps in the drawing, or the last few
+                steps, together with state information, as 
+                an aid to debugging}]
+           
 @section{Where to from here?}
 For children, the Bootstrap project, which enables children
 to design and implement their own games in Racket could be

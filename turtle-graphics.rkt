@@ -1,12 +1,14 @@
 ;; LICENSE: See License file LICENSE (MIT license)
 ;;
+;; Repository: https://github.com/danprager/turtlegraphics
+;;
 ;; Copyright 2013: Daniel Prager
 ;;                 daniel.a.prager@gmail.com
 
 ; TODO:
 ; * more documentation
 ; * more examples
-; * define as library
+; * define as a PLaneT packagege
 ; * set-as-exercise: show-frame-by-frame
 ; * extensions: fill (bit-blt)
 
