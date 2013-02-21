@@ -50,7 +50,7 @@ This package is designed to be used interactively from within Dr Racket.
 From the interactive prompt type
 
 @codeblock{(require "turtle-graphics.rkt")}
-@(require "turtle-graphics.rkt")
+@(require "../turtle-graphics.rkt")
 
 and press <Enter>.
 
@@ -190,7 +190,7 @@ Some out-of-the-box defs are provided:
           @item{Experiment with rotated images}]
 
 @subsection{Draw your name}
-@(require "jake.rkt")
+@(require "../examples/jake.rkt")
 Start by figuring out a single letter, for example J:
 @codeblock{
 (def (J)

@@ -4,24 +4,15 @@
 ;;
 ;; Copyright 2013: Daniel Prager
 ;;                 daniel.a.prager@gmail.com
-
-; TODO:
-; * more documentation
-; * more examples
-; * define as a PLaneT packagege
-; * set-as-exercise: show-frame-by-frame
-; * extensions: fill (bit-blt)
+;;
 
 #lang racket
 
-(require rackunit)
-(require (only-in plai
-                  define-type
-                  type-case))
-
-(require 2htdp/universe)
-(require (only-in racket/draw read-bitmap))
-(require (rename-in 2htdp/image
+(require rackunit racket/runtime-path
+         2htdp/universe
+         (only-in plai define-type type-case)
+         (only-in racket/draw read-bitmap)
+         (rename-in 2htdp/image
                     (color set-color)
                     (polygon im-polygon)
                     (square im-square)
@@ -330,10 +321,12 @@
 
 ;; Options for the visible representation of the turtle.
 ;; 
-(define *turtle-image* (read-bitmap "./turtle.png"))
-(define *pink-girl-image* (read-bitmap "./pink-girl.png"))
-(define *train-image* (read-bitmap "./train.png"))
-(define *turtles* 'undefined)
+(define-runtime-path turtle-path "turtle.png")
+(define *turtle-image* (read-bitmap turtle-path))
+(define-runtime-path pink-girl-path "pink-girl.png")
+(define *pink-girl-image* (read-bitmap pink-girl-path))
+(define-runtime-path train-path "train.png")
+(define *train-image* (read-bitmap train-path))
 
 ;; Choose a particular turtle image and pre-compute 360
 ;; rotations: 1 per degree.
@@ -348,6 +341,7 @@
           (build-vector 360 (λ (n) (rotate (modulo (- 360 90 n) 360) 
                                            turtle-image))))))
                                 
+(define *turtles* 'undefined)
 (set-turtle 'turtle)    ; Default to an image of a turtle
 
 ;; A "world" consists of an image, a pen, x,y-coordinates of the
@@ -531,9 +525,9 @@
     (list
      (repeatS 4 (list (fdS 90) (rtS 90)))
      (compositeS '(equilateral 100)
-                 (list (fdS 100) (rt 120)
-                       (fdS 100) (rt 120)
-                       (fdS 100) (rt 120)))))
+                 (list (fdS 100) (rtS 120)
+                       (fdS 100) (rtS 120)
+                       (fdS 100) (rtS 120)))))
  '((equilateral 100) 
    (repeat 4 (rt 90) (fd 90))))
 

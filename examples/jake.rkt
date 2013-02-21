@@ -1,6 +1,6 @@
 #lang racket
 
-(require "turtle-graphics.rkt")
+(require "../turtle-graphics.rkt")
 
 (provide J A K E
          JAKE)
