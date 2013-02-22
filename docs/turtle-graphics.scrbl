@@ -14,6 +14,7 @@ graphics -- is two-fold:
                  some of the simpler ideas of layered languages 
                  a la PLAI.}]
 
+@(image "animated-circle.gif")
 
 @section{Motivation: Why Turtle Graphics?  Why Racket?}
 
@@ -44,6 +45,11 @@ pictures, simultaneously exploring several mathematical concepts
 and gaining a foothold in the world of programming.
 
 @section{Getting started - an interactive visual guide}
+
+@margin-note{@bold{Tip}: I recommend checking the ``Put the 
+              interactions window beside the
+              definitions window'' option available from the main
+              menu under @bold{DrRacket > Preferences > General}.}
 
 This package is designed to be used interactively from within Dr Racket.
 
@@ -125,13 +131,19 @@ out-of-the-box alternatives to the default, literal
 @bold{'turtle}.
 
 @codeblock{(redraw)}
-@(redraw)
 Redraws the current image with the current turtle:
+@(redraw)
+
+@subsection{Movies}
 
 @codeblock{(movie)}
-Animates the drawing so far in a separate window.
+Animates the drawing so far in a separate window.  Really cool!
 
-TODO: Get an animated gif in here!
+@codeblock{(save-movie "animated-circle.gif")}
+Saves out an animation of the drawing so far into an
+animated .gif file, useful for posting on the web.  Note that 
+this command takes a while to run and the files are quite 
+large.
 
 @subsection{Defining your own commands}
 
@@ -272,7 +284,8 @@ incarnation of this code would require 8 undos to undo a call
 to a (square), which was inconvenient and unwieldy for a child
 to use.  Another goal was to allow the child to experiment
 interactively, then list the program in order to capture it
-and copy into Dr Racket's interaction window.
+and copy into Dr Racket's definition window where it could be 
+saved for later, split into (@bold{def} ...)s, etc.
 
 At the user level there's some macrology to get from the 
 interactive prompt to the sugared language.
@@ -306,7 +319,7 @@ Some ideas:
           @item{some way to vary the length of the turtle's
                 steps, to scale drawing up and down}
           @item{save/load an image}
-          @item{save an animation as an animated gif}
+          @item{transform an animation into an animated SVG}
           @item{show text}
           @item{interactive help}
           @item{make a scaled down``picture book'' of all

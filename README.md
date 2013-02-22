@@ -7,6 +7,8 @@ The intention of this library – interactive turtle graphics – is two-fold:
 
 * to explore in its implementation some of the simpler ideas of layered languages a la [PLAI](http://cs.brown.edu/courses/cs173/2012/book/).
  
+![Animated gif of a turtle drawing a circle.](https://raw.github.com/danprager/turtlegraphics/master/docs/animated-circle.gif)
+
 [Detailed documentation / tutorial](http://htmlpreview.github.com/?https://github.com/danprager/turtlegraphics/blob/master/docs/turtle-graphics.html).
 
 

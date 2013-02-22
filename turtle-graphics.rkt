@@ -9,9 +9,9 @@
 #lang racket
 
 (require rackunit racket/runtime-path
-         2htdp/universe
+         2htdp/universe mrlib/gif
          (only-in plai define-type type-case)
-         (only-in racket/draw read-bitmap)
+         (only-in racket/draw read-bitmap bitmap% bitmap-dc%)
          (rename-in 2htdp/image
                     (color set-color)
                     (polygon im-polygon)
@@ -25,7 +25,7 @@
          clear reset
          set-turtle
          redraw
-         movie
+         movie save-movie
          show-program
          def
          square centered-square 
@@ -485,7 +485,6 @@
                   (cons (reverse (cons (first s) frame))
                         (P 1.0 '() (append (second s) r)))))))))
 
-
 ;; Animate the current series of steps.
 ;;
 (define (movie)
@@ -506,6 +505,35 @@
               (on-tick next-frame *tick-rate*)
               (on-draw show-frame)
               (name "turtle-graphics"))))
+
+;; Create an animated gif (deliberately low frame-rater
+;;
+(define (image->bitmap% image 
+                        [width *default-width*]
+                        [height *default-height*])
+  (let* ([bm (make-object bitmap% width height)]
+         [dc (make-object bitmap-dc% bm)])
+    (send dc clear)
+    (send image draw dc 0 0 0 0 width height 0 0 #f)
+    bm))
+
+;; Animate the current series of steps.
+;;
+(define (save-movie filename)
+  (define (T world)
+    (list world (show-turtle-on world)))
+  
+  (define (S steps)  
+    (cond [(null? steps) (list (T (make-world)))]
+          [else (let ([pairs (S (rest steps))])
+                  (cons (T (draw (first steps) (caar pairs)))
+                        pairs))]))
+  (when (file-exists? filename) (delete-file filename))
+  (write-animated-gif
+   (reverse (map (compose image->bitmap% second)
+                 (S ((compose (λ (s) (partition s 30 60))
+                              optimize desugar) *steps*))))
+   25 filename #:last-frame-delay 100))
 
 
 ;; TESTS
