@@ -77,7 +77,7 @@ leaving a trail:
 takes effect when the turtle next draws.
 @(color 'red)
 
-@codeblock{(fd 50)} Move the turtle back 100 pixels, 
+@codeblock{(bk 100)} Move the turtle back 100 pixels, 
 leaving a trail:
 @(bk 100)
 
@@ -260,7 +260,7 @@ that is desugared into the simpler core language:
 
 @bold{define-type} is defined in the untyped PLAI language, 
 from Shriram Krishnamurti's book and video lectures on
-Programming Languages and their Interpretation.
+Programming Languages: Application and Interpretation.
 
 Note that the language as it stands is fairly impoverished.
 For example commands -- notwithstanding the use of (repeat ...) 
